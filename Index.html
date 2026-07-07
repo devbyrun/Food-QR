@@ -117,6 +117,7 @@
     try{
       data = await gas('getCustomerData', TABLE_NO);
       document.getElementById('tablePill').textContent = `โต๊ะ ${data.table}`;
+      if(data.shopOpen === false){ showShopClosed(); return; }
       renderMenu();
     }catch(err){
       showFatal(err.message);
@@ -204,6 +205,7 @@
     catch(err){ showToast(err.message); btn.disabled=false; btn.textContent='🔔 เรียกพนักงาน'; }
   }
 
+  function showShopClosed(){ document.getElementById('app').innerHTML=`<div class="locked"><div class="icon">🔒</div><h2>ขณะนี้ร้านปิด</h2><p>ร้านยังไม่เปิดรับออเดอร์ในขณะนี้<br>กรุณาติดต่อพนักงานหรือกลับมาสั่งใหม่เมื่อร้านเปิด</p></div>`; document.querySelector('.cart-bar').style.display='none'; }
   function showFatal(message){ document.getElementById('app').innerHTML=`<div class="status-card"><h2>เปิดหน้าสั่งอาหารไม่ได้</h2><p>${escapeHtml(message)}</p></div>`; }
   function showToast(message){ const el=document.getElementById('toast'); el.textContent=message; el.classList.add('show'); clearTimeout(window.__toastTimer); window.__toastTimer=setTimeout(()=>el.classList.remove('show'),3000); }
   function money(n){ return Number(n||0).toLocaleString('th-TH',{maximumFractionDigits:2}); }
